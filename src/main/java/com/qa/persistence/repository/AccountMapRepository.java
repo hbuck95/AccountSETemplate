@@ -33,8 +33,12 @@ public class AccountMapRepository implements AccountRepository {
 	public String deleteAccount(int accountNumber) {
 		if (accountMap.containsKey(accountNumber)) {
 			accountMap.remove(accountNumber);
+			return "{\"message\": \"account has been deleted sucessfully\"}";
+
 		}
-		return "{\"message\": \"account has been deleted sucessfully\"}";
+
+		return "{\"message\": \"specified account number does not match an account!\"}";
+
 	}
 
 	public String updateAccount(int accountNumber, String account) {
