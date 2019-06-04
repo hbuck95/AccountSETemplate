@@ -3,11 +3,11 @@ package com.qa.persistence.domain;
 public class Account {
 
 	private int id;
-	private String accountNumber;
+	private int accountNumber;
 	private String firstName;
 	private String lastName;
 
-	public Account(int id, String accountNumber, String firstName, String lastName) {
+	public Account(int id, int accountNumber, String firstName, String lastName) {
 		this.id = id;
 		this.accountNumber = accountNumber;
 		this.firstName = firstName;
@@ -26,11 +26,11 @@ public class Account {
 		this.id = id;
 	}
 
-	public String getAccountNumber() {
+	public int getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
+	public void setAccountNumber(int accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
