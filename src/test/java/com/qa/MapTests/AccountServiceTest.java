@@ -27,7 +27,7 @@ public class AccountServiceTest {
 		Account a = new Account(1, 123456, "John", "Smith");
 		String jsonString = json.getJSONForObject(a);
 		String message = amr.createAccount(jsonString);
-		assertEquals(message, "{\"message\": \"account has been created sucessfully\"}");
+		assertEquals("{\"message\": \"account has been created sucessfully\"}", message);
 
 	}
 
@@ -51,7 +51,7 @@ public class AccountServiceTest {
 		amr.createAccount(json.getJSONForObject(a));
 
 		String message = amr.deleteAccount(777777);
-		assertEquals(message, "{\"message\": \"account has been deleted sucessfully\"}");
+		assertEquals("{\"message\": \"account has been deleted sucessfully\"}", message);
 	}
 
 	@Test
