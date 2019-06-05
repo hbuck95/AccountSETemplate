@@ -1,10 +1,8 @@
 package com.qa.MapTests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.qa.persistence.domain.Account;
@@ -91,24 +89,27 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void getCountForFirstNamesInAccountWhenZeroOccurances() {
-		// For a later piece of functionality
-		fail("TODO");
+		amr.getAccountMap().put(1, acc1); // John
+		amr.getAccountMap().put(2, acc2); // Bobson
+		assertEquals(0, amr.getCountOfAccountsByFirstName("Steve"));
 	}
 
 	@Test
-	@Ignore
 	public void getCountForFirstNamesInAccountWhenOne() {
-		// For a later piece of functionality
-		fail("TODO");
+		amr.getAccountMap().put(1, acc1); // John
+		amr.getAccountMap().put(2, acc2); // Bobson
+		amr.getAccountMap().put(3, acc3); // Mike
+		assertEquals(1, amr.getCountOfAccountsByFirstName("John"));
 	}
 
 	@Test
-	@Ignore
 	public void getCountForFirstNamesInAccountWhenTwo() {
-		// For a later piece of functionality
-		fail("TODO");
+		amr.getAccountMap().put(1, acc1); // John
+		amr.getAccountMap().put(2, acc2); // Bobson
+		amr.getAccountMap().put(3, acc2); // Bobson
+		assertEquals(2, amr.getCountOfAccountsByFirstName("Bobson"));
+
 	}
 
 }

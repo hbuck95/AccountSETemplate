@@ -45,4 +45,16 @@ public class AccountMapRepository implements AccountRepository {
 		return "Account has been updated sucessfully";
 	}
 
+	public long getCountOfAccountsByFirstName(String firstName) {
+		// long count = 0;
+		// for(Account account : accountMap.values()) {
+		// if(account.getFirstName().equals(firstName))
+		// count++;
+		// }
+
+		long count = accountMap.values().stream().filter(x -> x.getFirstName().equals(firstName)).count();
+		System.out.println(String.format("There are %s accounts with the first name '%s'.", count, firstName));
+		return count;
+	}
+
 }

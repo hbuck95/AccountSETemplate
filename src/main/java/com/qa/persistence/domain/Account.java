@@ -1,10 +1,25 @@
 package com.qa.persistence.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Account {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
+	@Column(length = 4)
 	private String accountNumber;
+
+	@Column(length = 50)
 	private String firstName;
+
+	@Column(length = 50)
 	private String lastName;
 
 	public Account(int id, String accountNumber, String firstName, String lastName) {
