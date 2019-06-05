@@ -30,29 +30,19 @@ public class AccountMapRepository implements AccountRepository {
 
 	public String createAccount(String account) {
 		Account a = json.getObjectForJSON(account, Account.class);
-		if (accountMap.containsKey(a.getAccountNumber())) {
-			return "{\"message\": \"account with this number already exists!\"}";
-		}
-		accountMap.put(a.getAccountNumber(), a);
-
-		return "{\"message\": \"account has been created sucessfully\"}";
+		accountMap.put(a.getId(), a);
+		return "Account has been created sucessfully";
 	}
 
 	public String deleteAccount(int accountNumber) {
-		if (accountMap.containsKey(accountNumber)) {
-			accountMap.remove(accountNumber);
-			return "{\"message\": \"account has been deleted sucessfully\"}";
-
-		}
-
-		return "{\"message\": \"specified account number does not match an account!\"}";
-
+		accountMap.remove(accountNumber);
+		return "Account has been deleted sucessfully";
 	}
 
 	public String updateAccount(int accountNumber, String account) {
 		Account a = json.getObjectForJSON(account, Account.class);
 		accountMap.put(accountNumber, a);
-		return "{\"message\": \"account has been updated sucessfully\"}";
+		return "Account has been updated sucessfully";
 	}
 
 }
