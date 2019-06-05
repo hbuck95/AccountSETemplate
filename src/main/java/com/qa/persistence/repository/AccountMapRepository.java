@@ -20,13 +20,21 @@ public class AccountMapRepository implements AccountRepository {
 	// You must complete this section using TDD
 	// You can use the suggested tests or build your own.
 
+	public Map<Integer, Account> getAccountMap() {
+		return accountMap;
+	}
+
 	public String getAllAccounts() {
 		return json.getJSONForObject(accountMap.values());
 	}
 
 	public String createAccount(String account) {
 		Account a = json.getObjectForJSON(account, Account.class);
+		if (accountMap.containsKey(a.getAccountNumber())) {
+			return "{\"message\": \"account with this number already exists!\"}";
+		}
 		accountMap.put(a.getAccountNumber(), a);
+
 		return "{\"message\": \"account has been created sucessfully\"}";
 	}
 

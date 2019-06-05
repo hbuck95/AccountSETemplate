@@ -1,6 +1,7 @@
 package com.qa.MapTests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
@@ -27,8 +28,13 @@ public class AccountServiceTest {
 		Account a = new Account(1, 123456, "John", "Smith");
 		String jsonString = json.getJSONForObject(a);
 		String message = amr.createAccount(jsonString);
-		assertEquals("{\"message\": \"account has been created sucessfully\"}", message);
 
+		if (message.equals("{\"message\": \"account with this number already exists!\"}")) {
+			fail(String.format("Account not added as an account with the account number %s already exists!",
+					a.getAccountNumber()));
+		}
+
+		assertTrue(amr.getAccountMap().containsKey(a.getAccountNumber()));
 	}
 
 	@Test
@@ -39,6 +45,7 @@ public class AccountServiceTest {
 		int count = 0;
 		for (Account a : accounts) {
 			String message = amr.createAccount(json.getJSONForObject(a));
+			System.out.println(message);
 			count += message.equals("{\"message\": \"account has been created sucessfully\"}") ? 1 : 0;
 		}
 
@@ -57,7 +64,7 @@ public class AccountServiceTest {
 	@Test
 	public void remove2AccountsTest() {
 		Account[] accounts = new Account[] { new Account(4, 777777, "Sarah", "Smith"),
-				new Account(4, 888888, "Jeff", "Dell") };
+				new Account(5, 888888, "Jeff", "Dell") };
 
 		for (Account a : accounts) {
 			amr.createAccount(json.getJSONForObject(a));
@@ -75,7 +82,7 @@ public class AccountServiceTest {
 	@Test
 	public void remove2AccountTestAnd1ThatDoesntExist() {
 		Account[] accounts = new Account[] { new Account(4, 777777, "Sarah", "Smith"),
-				new Account(4, 888888, "Jeff", "Dell") };
+				new Account(5, 888888, "Jeff", "Dell") };
 
 		int[] accountNumbers = new int[] { accounts[0].getAccountNumber(), // Valid
 				accounts[1].getAccountNumber(), // Valid
