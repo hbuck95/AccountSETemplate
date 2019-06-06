@@ -5,6 +5,7 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
 
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -14,6 +15,7 @@ import com.qa.persistence.domain.Account;
 import com.qa.util.JSONUtil;
 
 @Transactional(SUPPORTS)
+@Default
 public class AccountDatabaseRepository implements AccountRepository {
 
 	@PersistenceContext(unitName = "primary")
@@ -21,12 +23,14 @@ public class AccountDatabaseRepository implements AccountRepository {
 
 	private JSONUtil util;
 
+	@Override
 	public String getAllAccounts() {
 		TypedQuery<Account> query = entityManager.createQuery("SELECT a FROM Account a", Account.class);
 		Collection<Account> accounts = query.getResultList();
 		return util.getJSONForObject(accounts);
 	}
 
+	@Override
 	@Transactional(REQUIRED)
 	public String createAccount(String account) {
 		Account acc = util.getObjectForJSON(account, Account.class);
@@ -34,12 +38,14 @@ public class AccountDatabaseRepository implements AccountRepository {
 		return "{\"message\": \"Account has been created sucessfully\"}";
 	}
 
+	@Override
 	@Transactional(REQUIRED)
 	public String deleteAccount(int accountNumber) {
 		entityManager.createQuery(String.format("DELETE FROM Account WHERE accountNumber = %s", accountNumber));
-		return "{\"message\": \"Account sucessfully deleted\"}";
+		return "{\"message\": \"Account successfully deleted\"}";
 	}
 
+	@Override
 	@Transactional(REQUIRED)
 	public String updateAccount(int accountNumber, String account) {
 		Account updateAcc = util.getObjectForJSON(account, Account.class);
@@ -51,18 +57,18 @@ public class AccountDatabaseRepository implements AccountRepository {
 		accFromDb.setLastName(updateAcc.getLastName());
 		entityManager.getTransaction().commit();
 
-		return "{\"message\": \"Account has been updated sucessfully\"}";
+		return "{\"message\": \"Account has been updated successfully\"}";
 
 	}
 
-	public long getCountOfAccountsByFirstName(String firstName) {
-		TypedQuery<Account> query = entityManager
-				.createQuery(String.format("SELECT a FROM ACCOUNT a WHERE firstName = ", firstName), Account.class);
-		return query.getResultList().size();
+	@Override
+	public String findAccount(int accountNumber) {
+		return util.getJSONForObject((Account) entityManager.find(Account.class, accountNumber));
 	}
 
-	public String findAccount(String firstName) {
-		return util.getJSONForObject(entityManager.find(Account.class, firstName));
+	@Override
+	public int cycleAccount(String firstName) {
+		return entityManager.createQuery("SELECT a FROM Account a", Account.class).getResultList().size();
 	}
 
 }

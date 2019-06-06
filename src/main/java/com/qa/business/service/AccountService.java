@@ -1,6 +1,6 @@
-package com.qa.persistence.repository;
+package com.qa.business.service;
 
-public interface AccountRepository {
+public interface AccountService {
 
 	String getAllAccounts();
 
