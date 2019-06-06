@@ -72,9 +72,10 @@ public class AccountMapRepository implements AccountRepository {
 
 	@Override
 	public int cycleAccount(String firstName) {
-		long count = accountMap.values().stream().filter(x -> x.getFirstName().equals(firstName)).count();
+
+		int count = (int) accountMap.values().stream().filter(x -> x.getFirstName().equals(firstName)).count();
 		System.out.println(String.format("There are %s accounts with the first name '%s'.", count, firstName));
-		return (int) count;
+		return count;
 	}
 
 }

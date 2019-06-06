@@ -7,6 +7,6 @@
       
       <alternatives>
       <!--  <class>com.qa.service.repository.AccountMapRepository</class>-->
-        <class>com.qa.persistence.repository.AccountMapRepository</class>
+       <!-- <class>com.qa.persistence.repository.AccountMapRepository</class>--> 
     </alternatives>
 </beans>

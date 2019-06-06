@@ -6,8 +6,10 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 import java.util.Collection;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
@@ -21,6 +23,7 @@ public class AccountDatabaseRepository implements AccountRepository {
 	@PersistenceContext(unitName = "primary")
 	private EntityManager entityManager;
 
+	@Inject
 	private JSONUtil util;
 
 	@Override
@@ -41,7 +44,9 @@ public class AccountDatabaseRepository implements AccountRepository {
 	@Override
 	@Transactional(REQUIRED)
 	public String deleteAccount(int accountNumber) {
-		entityManager.createQuery(String.format("DELETE FROM Account WHERE accountNumber = %s", accountNumber));
+		Account acc = entityManager.find(Account.class, accountNumber);
+		entityManager.remove(acc);
+
 		return "{\"message\": \"Account successfully deleted\"}";
 	}
 
@@ -49,13 +54,12 @@ public class AccountDatabaseRepository implements AccountRepository {
 	@Transactional(REQUIRED)
 	public String updateAccount(int accountNumber, String account) {
 		Account updateAcc = util.getObjectForJSON(account, Account.class);
-		Account accFromDb = entityManager.find(Account.class, accountNumber);
 
-		entityManager.getTransaction().begin();
-		accFromDb.setAccountNumber(updateAcc.getAccountNumber());
-		accFromDb.setFirstName(updateAcc.getFirstName());
-		accFromDb.setLastName(updateAcc.getLastName());
-		entityManager.getTransaction().commit();
+		Query query = entityManager.createQuery(String.format(
+				"UPDATE Account a SET accountNumber = '%s', firstName = '%s', lastName = '%s' WHERE a.id = %s",
+				updateAcc.getAccountNumber(), updateAcc.getFirstName(), updateAcc.getLastName(), accountNumber));
+
+		query.executeUpdate();
 
 		return "{\"message\": \"Account has been updated successfully\"}";
 
@@ -68,7 +72,9 @@ public class AccountDatabaseRepository implements AccountRepository {
 
 	@Override
 	public int cycleAccount(String firstName) {
-		return entityManager.createQuery("SELECT a FROM Account a", Account.class).getResultList().size();
+		return entityManager
+				.createQuery(String.format("SELECT a FROM Account a WHERE firstName = '%s'", firstName), Account.class)
+				.getResultList().size();
 	}
 
 }

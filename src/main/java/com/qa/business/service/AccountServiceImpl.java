@@ -39,8 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public int cycleAccount(String firstName) {
-		// TODO Auto-generated method stub
-		return 0;
+		return repo.cycleAccount(firstName);
 	}
 
 }
