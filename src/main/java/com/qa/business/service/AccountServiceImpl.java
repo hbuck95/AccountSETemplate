@@ -16,6 +16,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public String createAccount(String account) {
+		if (account.contains("9999"))
+			return "{\"message\": \"This account is blocked.\"}";
+
 		return repo.createAccount(account);
 	}
 
